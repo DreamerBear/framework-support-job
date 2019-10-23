@@ -1,0 +1,55 @@
+{
+  "properties": [
+    {
+      "name": "job.xxl.enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否开启xxl-job,默认关闭",
+      "defaultValue": false
+    },
+    {
+      "name": "job.xxl.admin.addresses",
+      "type": "java.lang.String",
+      "description": "xxl-job调度中心地址"
+    },
+    {
+      "name": "job.xxl.group.name",
+      "type": "java.lang.String",
+      "description": "xxl-job执行器分组名称"
+    },
+    {
+      "name": "job.xxl.executor.ip",
+      "type": "java.lang.String",
+      "description": "xxl-job执行器ip,非必填"
+    },
+    {
+      "name": "job.xxl.executor.port",
+      "type": "java.lang.Integer",
+      "description": "xxl-job执行器端口"
+    },
+    {
+      "name": "job.xxl.accessToken",
+      "type": "java.lang.String",
+      "description": "xxl-job执行器token,非必填"
+    },
+    {
+      "name": "job.xxl.executor.logpath",
+      "type": "java.lang.String",
+      "description": "xxl-job执行器日志路径"
+    },
+    {
+      "name": "job.xxl.executor.author",
+      "type": "java.lang.String",
+      "description": "xxl-job执行器负责人"
+    },
+    {
+      "name": "job.xxl.executor.logretentiondays",
+      "type": "java.lang.Integer",
+      "description": "xxl-job执行器日志保留天数"
+    },
+    {
+      "name": "job.xxl.executor.alarmEmail",
+      "type": "java.lang.String",
+      "description": "xxl-job执行器报警邮件接收地址"
+    }
+  ]
+}
