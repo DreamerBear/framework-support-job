@@ -17,9 +17,14 @@ public class XxlJobInfo {
     private int jobGroup;
 
     /**
-     * 任务执行CRON表达式
+     * 延时
      */
-    private String jobCron;
+    private long delay;
+
+    /**
+     * 延时单位
+     */
+    private String unit;
 
     /**
      * 执行器，任务Handler名称

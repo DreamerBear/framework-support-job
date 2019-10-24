@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.ucharm.framework.support.job.core.DelayJobHandler;
 import com.ucharm.framework.support.job.core.JobExecutorService;
 import com.ucharm.framework.support.job.core.JobParam;
-import com.ucharm.framework.support.job.util.CronUtil;
 import com.xxl.job.core.handler.annotation.JobHandler;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -36,7 +35,7 @@ public class XxlJobExecutorService implements JobExecutorService, ApplicationCon
      */
     private int jobGroup;
 
-    public XxlJobExecutorService(String author,String alarmEmail,int jobGroup){
+    public XxlJobExecutorService(String author, String alarmEmail, int jobGroup) {
         this.author = author;
         this.alarmEmail = alarmEmail;
         this.jobGroup = jobGroup;
@@ -50,6 +49,16 @@ public class XxlJobExecutorService implements JobExecutorService, ApplicationCon
     @Override
     public <T extends JobParam> void submitWithFixedDelay(Class<? extends DelayJobHandler<T>> delayJobHandlerClass, T paramObject, long delay, ChronoUnit unit) {
 
+        //入参校验,延时小于6s报错
+        Objects.requireNonNull(delayJobHandlerClass);
+        Objects.requireNonNull(paramObject);
+        Objects.requireNonNull(unit);
+        if (delay < 0) {
+            throw new IllegalArgumentException("delay must be positive");
+        }
+        if(unit.getDuration().multipliedBy(delay).minus(6,ChronoUnit.SECONDS).isNegative()){
+            throw new IllegalArgumentException("delay must gte 6s");
+        }
         //任务匹配
         DelayJobHandler<T> delayJobHandler = applicationContext.getBean(delayJobHandlerClass);
 
@@ -67,16 +76,14 @@ public class XxlJobExecutorService implements JobExecutorService, ApplicationCon
         //入参序列化
         String executorParam = JSON.toJSONString(paramObject);
 
-        //cron表达式生成
-        String jobCron = CronUtil.generateCronByFixedDelay(delay, unit);
-
         //提交任务
         XxlJobInfo xxlJobInfo = new XxlJobInfo();
         xxlJobInfo.setJobGroup(jobGroup);
-        xxlJobInfo.setJobCron(jobCron);
+        xxlJobInfo.setDelay(delay);
+        xxlJobInfo.setUnit(unit.name());
         xxlJobInfo.setExecutorHandler(executorHandler);
         xxlJobInfo.setExecutorParam(executorParam);
-        xxlJobInfo.setJobDesc("延时任务:"+executorHandler);
+        xxlJobInfo.setJobDesc("延时任务:" + executorHandler);
         xxlJobInfo.setAuthor(author);
         xxlJobInfo.setAlarmEmail(alarmEmail);
         XxlJobAdminClient.submitDelayJob(xxlJobInfo);

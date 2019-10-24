@@ -10,7 +10,7 @@ import java.time.temporal.ChronoUnit;
 public interface JobExecutorService {
 
     /**
-     * 提交延时任务
+     * 提交延时任务,注意延时必须大于等于6秒
      *
      * @param delayJobHandlerClass 延时任务执行器class
      * @param paramObject          入参对象
