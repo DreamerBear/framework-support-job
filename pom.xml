@@ -16,7 +16,7 @@
     <description>framework-support-job</description>
 
     <properties>
-        <xxl-job.version>2.1.1-SNAPSHOT</xxl-job.version>
+        <xxl-job.version>2.3.0</xxl-job.version>
     </properties>
 
     <dependencies>
